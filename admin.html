@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Login - V R Dairy</title>
+    <link rel="icon" href="./v.r logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        margin: 0;
+        background: linear-gradient(120deg, #fdfbfb, #ebedee);
+      }
+
+      /* Login Screen */
+      .login-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+      }
+      .login-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        width: 300px;
+      }
+      .login-box h2 {
+        margin-bottom: 20px;
+        color: #ff416c;
+      }
+      .login-box input {
+        width: 100%;
+        padding: 12px;
+        margin-bottom: 15px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+      .login-box button {
+        width: 100%;
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        transition: 0.3s;
+      }
+      .login-box button:hover {
+        transform: scale(1.05);
+      }
+
+      /* Admin Panel */
+      #adminPanel {
+        display: none;
+        padding: 20px;
+      }
+      header {
+        text-align: center;
+        font-size: 26px;
+        font-weight: bold;
+        margin-bottom: 20px;
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: white;
+        padding: 15px;
+        border-radius: 10px;
+      }
+      .form-section,
+      .product-list {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      label {
+        display: block;
+        margin: 10px 0 5px;
+      }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        font-size: 15px;
+      }
+      button {
+        margin-top: 10px;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 15px;
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        color: white;
+        transition: 0.3s;
+      }
+      button:hover {
+        transform: scale(1.05);
+      }
+
+      /* Product Cards */
+      .product-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #f4f4f4;
+        padding: 12px;
+        margin-bottom: 12px;
+        border-radius: 8px;
+      }
+      .product-card img {
+        width: 60px;
+        height: 60px;
+        border-radius: 8px;
+        object-fit: cover;
+      }
+      .product-info {
+        flex: 1;
+        margin-left: 10px;
+      }
+      .toggle-btn {
+        padding: 6px 12px;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        margin: 2px;
+      }
+      .available {
+        background: #28a745;
+        color: white;
+      }
+      .not-available {
+        background: #dc3545;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login Screen -->
+    <div class="login-screen" id="loginScreen">
+      <div class="login-box">
+        <h2>🔑 Admin Login</h2>
+        <input
+          type="password"
+          id="passwordInput"
+          placeholder="Enter Password"
+        />
+        <button onclick="checkPassword()">Login</button>
+        <p id="errorMsg" style="color: red; display: none; margin-top: 10px">
+          ❌ Incorrect password!
+        </p>
+      </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div id="adminPanel">
+      <header>🔑 Admin Panel (Password: 543212345)</header>
+
+      <div class="form-section">
+        <h2>Add / Edit Product</h2>
+        <label>Product Name</label>
+        <input type="text" id="pname" placeholder="Enter product name" />
+        <label>Price (₹)</label>
+        <input type="number" id="pprice" placeholder="Enter price" />
+        <label>Category</label>
+        <select id="pcategory">
+          <option value="Milk">Milk</option>
+          <option value="Curd">Curd</option>
+          <option value="Paneer">Paneer</option>
+          <option value="Ghee">Ghee</option>
+          <option value="Butter">Butter</option>
+        </select>
+        <label>Image URL</label>
+        <input type="text" id="pimage" placeholder="Paste image link" />
+        <label>Description</label>
+        <textarea
+          id="pdesc"
+          rows="3"
+          placeholder="Enter product description"
+        ></textarea>
+        <button id="submitBtn" onclick="submitProduct()">➕ Add Product</button>
+      </div>
+
+      <a href="./promoting.html"><button>Add Promotions</button></a>
+
+      <div class="product-list">
+        <h2>Manage Products</h2>
+        <div id="productList"></div>
+      </div>
+    </div>
+
+    <script>
+      // Password check
+      function checkPassword() {
+        const input = document.getElementById("passwordInput").value;
+        const correctPassword = "543212345";
+        if (input === correctPassword) {
+          document.getElementById("loginScreen").style.display = "none";
+          document.getElementById("adminPanel").style.display = "block";
+        } else {
+          document.getElementById("errorMsg").style.display = "block";
+        }
+      }
+    </script>
+
+    <script>
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbyOgxVCqsXpG26Vntuw4m7mnW7-EmpOpzbyJgFSNTSHjaOjFETA8Hp_NkJE1n21sQoAGA/exec"; // Replace with your Apps Script URL
+      let editMode = false;
+      let editProductId = null;
+
+      async function fetchProducts() {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+        return data;
+      }
+
+      async function renderProductList() {
+        const products = await fetchProducts();
+        const container = document.getElementById("productList");
+        container.innerHTML = "";
+        products.forEach((prod) => {
+          const div = document.createElement("div");
+          div.className = "product-card";
+          div.innerHTML = `
+        <img src="${prod.img}" alt="${prod.name}">
+        <div class="product-info">
+          <strong>${prod.name}</strong> (₹${prod.price}) <br>
+          <small>${prod.category}</small> <br>
+          <small>${prod.desc || ""}</small>
+        </div>
+        <div>
+          <button class="toggle-btn ${
+            prod.available ? "available" : "not-available"
+          }" onclick="toggleAvailability('${prod.id}')">${
+            prod.available ? "Available" : "Not Available"
+          }</button>
+          <button class="toggle-btn edit-btn" onclick="editProduct('${
+            prod.id
+          }')">Edit</button>
+          <button class="toggle-btn delete-btn" onclick="deleteProduct('${
+            prod.id
+          }')">Delete</button>
+        </div>
+      `;
+          container.appendChild(div);
+        });
+      }
+
+      async function submitProduct() {
+        const name = document.getElementById("pname").value.trim();
+        const price = parseFloat(document.getElementById("pprice").value);
+        const category = document.getElementById("pcategory").value;
+        const img =
+          document.getElementById("pimage").value.trim() ||
+          "https://via.placeholder.com/200";
+        const desc = document.getElementById("pdesc").value.trim();
+
+        if (!name || !price || !category) {
+          alert("Fill all fields");
+          return;
+        }
+
+        const action = editMode ? "update" : "add";
+        const payload = { action, name, price, category, img, desc };
+        if (editMode) payload.id = editProductId;
+
+        await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+
+        editMode = false;
+        editProductId = null;
+        clearForm();
+        renderProductList();
+      }
+
+      function clearForm() {
+        document.getElementById("pname").value = "";
+        document.getElementById("pprice").value = "";
+        document.getElementById("pcategory").value = "Milk";
+        document.getElementById("pimage").value = "";
+        document.getElementById("pdesc").value = "";
+        document.getElementById("submitBtn").textContent = "➕ Add Product";
+      }
+
+      async function editProduct(id) {
+        const products = await fetchProducts();
+        const prod = products.find((p) => p.id === id);
+        if (!prod) return;
+        document.getElementById("pname").value = prod.name;
+        document.getElementById("pprice").value = prod.price;
+        document.getElementById("pcategory").value = prod.category;
+        document.getElementById("pimage").value = prod.img;
+        document.getElementById("pdesc").value = prod.desc;
+        editMode = true;
+        editProductId = id;
+        document.getElementById("submitBtn").textContent = "💾 Save Changes";
+      }
+
+      async function deleteProduct(id) {
+        await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "delete", id }),
+        });
+        renderProductList();
+      }
+
+      async function toggleAvailability(id) {
+        await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "toggle", id }),
+        });
+        renderProductList();
+      }
+
+      renderProductList();
+    </script>
+  </body>
+</html>

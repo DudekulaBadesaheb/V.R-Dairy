@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Item Detail</title>
+    <link rel="icon" href="./v.r logo.png" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f9f9f9;
+        padding: 20px;
+      }
+      .container {
+        max-width: 600px;
+        margin: auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+      }
+      img {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 20px;
+      }
+      input {
+        width: 60px;
+        padding: 8px;
+        margin-top: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        margin-top: 15px;
+        background: #28a745;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #218838;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" id="itemContainer"></div>
+
+    <script>
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const name = params.get("name");
+      const price = parseFloat(params.get("price"));
+      const image = params.get("image");
+      const desc = decodeURIComponent(params.get("desc"));
+
+      const container = document.getElementById("itemContainer");
+      container.innerHTML = `
+<img src="${image}" alt="${name}">
+<h2>${name}</h2>
+<p>Price: ₹${price}</p>
+<p>Description: ${desc}</p>
+<label>Quantity:</label> <input type="number" id="qty" min="1" value="1"><br>
+<button id="addCartBtn">Add to Cart</button>
+<button onclick="goBack()">Back to Category</button>
+`;
+
+      document
+        .getElementById("addCartBtn")
+        .addEventListener("click", function () {
+          const qty = parseInt(document.getElementById("qty").value);
+          let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+          const existing = cart.find((x) => x.id === id);
+          if (existing) existing.qty += qty;
+          else cart.push({ id, name, price, qty });
+          localStorage.setItem("cart", JSON.stringify(cart));
+          alert("✅ Added to Cart");
+        });
+
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+  </body>
+</html>

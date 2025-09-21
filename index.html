@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>V R Dairy - Home</title>
+    <link rel="icon" href="./v.r logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(120deg, #fdfbfb, #ebedee);
+        color: #333;
+      }
+      header {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        color: #fff;
+        text-align: center;
+        padding: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      header img {
+        height: 100px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+      /* Categories */
+      .categories {
+        display: flex;
+        justify-content: center;
+        gap: 20px;
+        padding: 20px;
+        overflow-x: auto;
+        background: #fff;
+        border-radius: 12px;
+        margin: 20px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      .category {
+        text-align: center;
+        cursor: pointer;
+        transition: transform 0.3s;
+        flex: 0 0 auto;
+      }
+      .category img {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        object-fit: cover;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+      }
+      .category:hover {
+        transform: translateY(-5px);
+      }
+      .category:hover img {
+        transform: scale(1.1);
+      }
+      /* Slider */
+      .slider {
+        overflow: hidden;
+        width: 100%;
+        margin: 30px 0;
+      }
+      .slide-track {
+        display: flex;
+        animation: scroll 25s linear infinite;
+      }
+      .slide {
+        width: 260px;
+        height: 180px;
+        margin: 0 10px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+      }
+      .slide:hover {
+        transform: scale(1.05);
+      }
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
+      }
+      /* Video */
+      video {
+        display: block;
+        max-width: 90%;
+        margin: auto;
+        border-radius: 20px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+      }
+      /* Fixed Buttons */
+      .fixed-buttons {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 20px;
+        z-index: 999;
+      }
+      .icon-button {
+        background: linear-gradient(145deg, #ff416c, #ff4b2b);
+        border: none;
+        padding: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        color: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: 0.3s;
+        position: relative;
+      }
+      .icon-button:hover {
+        transform: scale(1.15);
+      }
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: yellow;
+        color: black;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 3px 7px;
+      }
+      /* Sections */
+      .section {
+        display: flex;
+        gap: 20px;
+        margin: 20px;
+        padding: 20px;
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        flex-wrap: wrap;
+      }
+      .left,
+      .right {
+        flex: 1;
+        min-width: 250px;
+      }
+      .middle {
+        flex: 1;
+        text-align: center;
+      }
+      .middle img {
+        max-width: 80%;
+        border-radius: 12px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+      .highlight {
+        color: #ff416c;
+        font-weight: bold;
+      }
+      /* Start Button */
+      .start-shopping {
+        text-align: center;
+        margin: 30px;
+      }
+      .start-shopping button {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: #fff;
+        border: none;
+        padding: 15px 30px;
+        font-size: 18px;
+        border-radius: 10px;
+        cursor: pointer;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+      }
+      .start-shopping button:hover {
+        transform: scale(1.05);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="./v.r image.png" alt="V R Logo" />
+    </header>
+
+    <!-- Categories -->
+    <div class="categories">
+      <div class="category" onclick="startShopping('Milk')">
+        <img src="https://hamul.coop/wp-content/uploads/2020/09/kidmilk2.jpg" />
+        <p>Milk</p>
+      </div>
+      <div class="category" onclick="startShopping('Curd')">
+        <img
+          src="https://themadscientistskitchen.com/wp-content/uploads/2020/07/Dahi--500x375.jpg"
+        />
+        <p>Curd</p>
+      </div>
+      <div class="category" onclick="startShopping('Ghee')">
+        <img
+          src="https://budgetbazaar.online/wp-content/uploads/2024/07/ghee-1.jpg"
+        />
+        <p>Ghee</p>
+      </div>
+      <div class="category" onclick="startShopping('Paneer')">
+        <img
+          src="https://votrepoteage.eshops.mu/wp-content/uploads/2022/05/Instant-Pot-Paneer-01.jpg"
+        />
+        <p>Paneer</p>
+      </div>
+      <div class="category" onclick="startShopping('Butter')">
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQl4KHaFZA36rdoS13Bf-a_Amu7xNrpq1_pdJPmEHC5MbutNlNGvhIGUCs1BzXYi2Y1cZk&usqp=CAU"
+        />
+        <p>Butter</p>
+      </div>
+    </div>
+
+    <!-- Slider -->
+    <div class="slider"><div class="slide-track" id="sliderTrack"></div></div>
+
+    <!-- Promo Video -->
+    <video controls autoplay muted loop>
+      <source
+        src="./DAIRY HARVEST'S farm fresh milk _ company promo video _ Dairy farm..mp4"
+        type="video/mp4"
+      />
+    </video>
+
+    <!-- Fixed Buttons -->
+    <div class="fixed-buttons">
+      <a href="./index.html"
+        ><button class="icon-button"><i class="fas fa-home"></i></button
+      ></a>
+      <a href="./cart.html"
+        ><button class="icon-button">
+          <i class="fas fa-shopping-cart"></i
+          ><span id="cartBadge" class="cart-badge" style="display: none"
+            >0</span
+          >
+        </button></a
+      >
+      <a href="./support.html"
+        ><button class="icon-button"><i class="fas fa-headset"></i></button
+      ></a>
+    </div>
+
+    <!-- Sections -->
+    <div class="section">
+      <div class="left">
+        <h2>HEALTHIER & TASTIER</h2>
+        <p>Dahi or <span class="highlight">Curd</span> is a staple...</p>
+      </div>
+      <div class="middle">
+        <img
+          src="https://static.vecteezy.com/system/resources/thumbnails/036/291/197/small_2x/ai-generated-sour-cream-in-white-bowl-with-transparent-background-ai-png.png"
+        />
+        <h2>BEST QUALITY V R CURD</h2>
+      </div>
+      <div class="right">
+        <h2>GOODNESS OF CALCIUM</h2>
+        <p>Packed with calcium, protein...</p>
+      </div>
+    </div>
+
+    <!-- more sections (Ghee, Milk, Butter, Paneer) same style -->
+
+    <div class="start-shopping">
+      <button onclick="enterStore()">Start Shopping 🛒</button>
+      <a href="./admin.html"><button>admin</button></a>
+    </div>
+
+    <script>
+      function enterStore() {
+        window.location.href = "store.html";
+      }
+      function startShopping(cat) {
+        window.location.href = `category.html?cat=${cat}`;
+      }
+
+      // Slider
+      const sliderTrack = document.getElementById("sliderTrack");
+      const images = JSON.parse(localStorage.getItem("sliderImages") || "[]");
+      const fallback = [
+        "https://static.vecteezy.com/system/resources/previews/007/144/859/non_2x/dairy-farm-label-logo-with-a-dairy-cow-cartoon-free-vector.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-0jD_yumTaFR7VA-EtnfvFPFC1HOV-cAJHzYURv8hItfhhY_2uL4TuU6Xl3kyffQD79E&usqp=CAU",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTrwLm_t5r2lnHexIiWw97CK1Y4kRHxgSxw&s",
+      ];
+      const finalImgs = images.length ? images : fallback;
+      [...finalImgs, ...finalImgs].forEach((url) => {
+        const div = document.createElement("div");
+        div.className = "slide";
+        div.innerHTML = `<img src="${url}" alt="Promo">`;
+        sliderTrack.appendChild(div);
+      });
+
+      // Cart badge
+      function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const total = cart.reduce((sum, item) => sum + item.qty, 0);
+        const badge = document.getElementById("cartBadge");
+        if (total > 0) {
+          badge.style.display = "inline-block";
+          badge.textContent = total;
+        } else badge.style.display = "none";
+      }
+      updateCartBadge();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Place Order - V R Dairy</title>
+    <link rel="icon" href="./v.r logo.png" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(120deg, #fdfbfb, #ebedee);
+        color: #333;
+      }
+      header {
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
+        color: white;
+        text-align: center;
+        padding: 15px;
+        font-size: 22px;
+        font-weight: bold;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+      }
+      .container {
+        max-width: 600px;
+        margin: 30px auto;
+        background: #fff;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      }
+      h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ff416c;
+      }
+      input,
+      textarea,
+      button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 16px;
+      }
+      button {
+        background: linear-gradient(90deg, #00c6ff, #0072ff);
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      button:hover {
+        transform: scale(1.05);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+      th,
+      td {
+        padding: 12px;
+        border: 1px solid #ddd;
+        text-align: center;
+      }
+      th {
+        background: #ff416c;
+        color: white;
+      }
+      /* Fixed Buttons */
+      .fixed-buttons {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 20px;
+        z-index: 999;
+      }
+      .icon-button {
+        background: linear-gradient(145deg, #ff416c, #ff4b2b);
+        border: none;
+        padding: 15px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 20px;
+        color: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        transition: 0.3s;
+        position: relative;
+      }
+      .icon-button:hover {
+        transform: scale(1.15);
+      }
+      .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: yellow;
+        color: black;
+        font-size: 12px;
+        font-weight: bold;
+        border-radius: 50%;
+        padding: 3px 7px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>📦 Place Your Order</header>
+
+    <div class="container">
+      <h2>Order Form</h2>
+      <div id="cartPreview"></div>
+      <form id="orderForm">
+        <input name="name" placeholder="Name" required />
+        <input name="contact" placeholder="Contact Number" required />
+        <textarea name="address" placeholder="Address" required></textarea>
+        <input type="date" name="date" required />
+
+        <!-- Live Location -->
+        <input
+          type="text"
+          name="location"
+          id="location"
+          placeholder="Click 'Get Location'"
+          readonly
+        />
+        <button type="button" onclick="getLocation()">📍 Get Location</button>
+
+        <button type="submit">Place Order</button>
+      </form>
+      <!-- <a href="./index.html"
+        ><button style="margin-top: 10px; background: #ff416c">
+          Back To Home
+        </button></a
+      > -->
+      <p id="msg" style="text-align: center; margin-top: 15px"></p>
+    </div>
+
+    <!-- Fixed Buttons -->
+    <div class="fixed-buttons">
+      <a href="./index.html"
+        ><button class="icon-button"><i class="fas fa-home"></i></button
+      ></a>
+      <a href="./cart.html"
+        ><button class="icon-button">
+          <i class="fas fa-shopping-cart"></i
+          ><span id="cartBadge" class="cart-badge" style="display: none"
+            >0</span
+          >
+        </button></a
+      >
+      <a href="./support.html"
+        ><button class="icon-button"><i class="fas fa-headset"></i></button
+      ></a>
+    </div>
+
+    <script>
+      // Google Script URL
+      const GOOGLE_SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyfiN7rjqmSySg_VVo9hE5SBto3U2owCqq44oZEOQfGUNhB0X03ZT9GkbOR-e1nWHye4g/exec"; // replace with your Apps Script URL
+
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const cartDiv = document.getElementById("cartPreview");
+
+      if (cart.length === 0) {
+        cartDiv.innerHTML = "<p>🛒 Cart is empty!</p>";
+      } else {
+        let html =
+          "<table><tr><th>Item</th><th>Price</th><th>Qty</th><th>Total</th></tr>";
+        let total = 0;
+        cart.forEach((item) => {
+          html += `<tr><td>${item.name}</td><td>₹${item.price}</td><td>${
+            item.qty
+          }</td><td>₹${item.price * item.qty}</td></tr>`;
+          total += item.price * item.qty;
+        });
+        html += `<tr><td colspan="3"><strong>Total</strong></td><td>₹${total}</td></tr></table>`;
+        cartDiv.innerHTML = html;
+      }
+
+      function getLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              const lat = pos.coords.latitude;
+              const lon = pos.coords.longitude;
+              document.getElementById(
+                "location"
+              ).value = `https://www.google.com/maps?q=${lat},${lon}`;
+            },
+            (err) => alert("Failed to get location: " + err.message)
+          );
+        } else alert("Geolocation not supported in your browser");
+      }
+
+      function updateCartBadge() {
+        const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+        const total = cart.reduce((sum, item) => sum + item.qty, 0);
+        const badge = document.getElementById("cartBadge");
+        if (total > 0) {
+          badge.style.display = "inline-block";
+          badge.textContent = total;
+        } else badge.style.display = "none";
+      }
+
+      updateCartBadge();
+
+      document
+        .getElementById("orderForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          if (cart.length === 0) {
+            alert("Cart empty");
+            return;
+          }
+
+          const formData = new FormData(this);
+          formData.append("cart", JSON.stringify(cart));
+
+          fetch(GOOGLE_SCRIPT_URL, { method: "POST", body: formData })
+            .then((res) => res.text())
+            .then((data) => {
+              document.getElementById("msg").innerText =
+                "✅ Order placed successfully!   My coordinator contact with you";
+              localStorage.removeItem("cart");
+              cartDiv.innerHTML = "<p>🛒 Your cart is now empty!</p>";
+              this.reset();
+              updateCartBadge();
+            })
+            .catch((err) => {
+              document.getElementById("msg").innerText =
+                "❌ Failed to send order";
+              console.error(err);
+            });
+        });
+    </script>
+  </body>
+</html>
