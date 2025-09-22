@@ -2,59 +2,46 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Promotions - Manage Slider</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Promotions Admin</title>
     <link rel="icon" href="./v.r logo.png" />
     <style>
       body {
-        font-family: "Poppins", sans-serif;
-        margin: 0;
-        padding: 0;
-        background: url("./v.r\ logo.png") no-repeat center center fixed;
+        font-family: Poppins, sans-serif;
+        padding: 15px;
+        /* Page background */
+        background: url("./promo-bg.jpg") no-repeat center center fixed;
         background-size: cover;
       }
 
-      header {
-        text-align: center;
-        background: rgba(255, 65, 108, 0.9); /* transparent gradient */
-        background: linear-gradient(
-          90deg,
-          rgba(255, 65, 108, 0.9),
-          rgba(255, 75, 43, 0.9)
-        );
-        color: white;
-        padding: 20px;
-        font-size: 28px;
-        font-weight: bold;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-      }
-
       .container {
-        max-width: 700px;
-        margin: 40px auto;
-        background: rgba(255, 255, 255, 0.8); /* transparent white */
-        padding: 30px;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        margin: auto;
+        /* Semi-transparent white background */
+        background: rgba(255, 255, 255, 0.85);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px); /* adds blur behind container */
       }
 
       h2 {
         text-align: center;
-        color: #304ffe;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
       }
 
       input,
       button {
         width: 100%;
-        padding: 12px;
-        margin: 10px 0;
+        padding: 10px;
+        margin: 5px 0;
         border-radius: 8px;
         border: 1px solid #ccc;
         font-size: 15px;
       }
 
       button {
-        background: linear-gradient(90deg, #304ffe, #1a237e);
+        background: linear-gradient(90deg, #ff416c, #ff4b2b);
         color: white;
         border: none;
         cursor: pointer;
@@ -65,50 +52,46 @@
         transform: scale(1.05);
       }
 
-      a button {
-        background: linear-gradient(90deg, #ff416c, #ff4b2b);
-      }
-
       ul {
-        margin-top: 20px;
         list-style: none;
         padding: 0;
+        margin-top: 15px;
       }
 
       li {
         display: flex;
         align-items: center;
-        gap: 15px;
-        margin-bottom: 15px;
-        background: rgba(255, 255, 255, 0.85); /* transparent card */
+        gap: 10px;
+        margin: 8px 0;
+        background: rgba(244, 244, 244, 0.9);
         padding: 10px;
-        border-radius: 10px;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        flex-wrap: wrap;
       }
 
       li img {
-        width: 120px;
-        border-radius: 8px;
+        width: 80px;
+        height: 80px;
+        border-radius: 6px;
         object-fit: cover;
       }
 
       li button {
-        width: auto;
-        padding: 8px 14px;
+        flex: 1;
+        min-width: 100px;
+        padding: 8px;
         font-size: 14px;
-        border-radius: 8px;
       }
 
-      /* 🔹 Mobile Responsive Styles */
+      /* 📱 Mobile Theme */
       @media (max-width: 600px) {
-        header {
-          font-size: 22px;
-          padding: 15px;
+        body {
+          padding: 10px;
         }
 
         .container {
-          margin: 20px;
-          padding: 20px;
+          width: 100%;
+          padding: 15px;
         }
 
         input,
@@ -119,73 +102,78 @@
 
         li {
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           text-align: center;
+          gap: 8px;
         }
 
         li img {
           width: 100%;
-          max-height: 180px;
+          max-width: 200px;
+          height: auto;
         }
 
         li button {
           width: 100%;
-          margin-top: 10px;
         }
       }
     </style>
   </head>
   <body>
-    <header>📢 Manage Promotions / Homepage Slider</header>
-
     <div class="container">
-      <h2>Add / Remove Slider Images</h2>
-
-      <input
-        type="text"
-        id="imageUrl"
-        placeholder="Enter Image URL for Promotion"
-      />
-      <button onclick="addImage()">➕ Add Promotion</button>
-
-      <a href="./admin.html"><button>⬅ Go To Admin Page</button></a>
-
-      <ul id="imageList"></ul>
+      <h2>Manage Promotions</h2>
+      <input type="text" id="promoUrl" placeholder="Enter Image/Video URL" />
+      <button onclick="addPromo()">➕ Add Promotion</button>
+      <ul id="promoList"></ul>
     </div>
 
     <script>
-      // Load images from localStorage
-      let images = JSON.parse(localStorage.getItem("sliderImages") || "[]");
-      const ul = document.getElementById("imageList");
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbwLlBRErTsmQl7g4G7w7IqrXo0tFTb1yoAAioHr1xqiE1PxYtJxfvrBlR30s9Js1JScWA/exec"; // replace with your Web App URL
+      let promos = [];
 
-      function displayImages() {
+      // Fetch all promotions
+      async function fetchPromos() {
+        const res = await fetch(API_URL);
+        promos = await res.json();
+        displayPromos();
+      }
+
+      // Display promotions
+      function displayPromos() {
+        const ul = document.getElementById("promoList");
         ul.innerHTML = "";
-        images.forEach((url, idx) => {
+        promos.forEach((p) => {
           const li = document.createElement("li");
-          li.innerHTML = `
-            <img src="${url}" alt="Promo ${idx + 1}">
-            <button onclick="removeImage(${idx})">❌ Remove</button>
-          `;
+          li.innerHTML = `<img src="${p.url}" alt="Promo">
+            <button onclick="deletePromo('${p.id}')">❌ Remove</button>`;
           ul.appendChild(li);
         });
-        localStorage.setItem("sliderImages", JSON.stringify(images));
       }
 
-      function addImage() {
-        const url = document.getElementById("imageUrl").value.trim();
-        if (url) {
-          images.push(url);
-          document.getElementById("imageUrl").value = "";
-          displayImages();
-        }
+      // Add promotion
+      async function addPromo() {
+        const url = document.getElementById("promoUrl").value.trim();
+        if (!url) return alert("Enter a URL!");
+        await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "add", url }),
+        });
+        document.getElementById("promoUrl").value = "";
+        fetchPromos();
       }
 
-      function removeImage(idx) {
-        images.splice(idx, 1);
-        displayImages();
+      // Delete promotion
+      async function deletePromo(id) {
+        await fetch(API_URL, {
+          method: "POST",
+          body: JSON.stringify({ action: "delete", id }),
+        });
+        fetchPromos();
       }
 
-      displayImages();
+      // Initial fetch
+      fetchPromos();
     </script>
   </body>
 </html>
