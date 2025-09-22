@@ -9,27 +9,23 @@
       body {
         font-family: Poppins, sans-serif;
         padding: 15px;
-        /* Page background */
         background: url("./promo-bg.jpg") no-repeat center center fixed;
         background-size: cover;
+        margin: 0;
       }
-
       .container {
         max-width: 500px;
         margin: auto;
-        /* Semi-transparent white background */
         background: rgba(255, 255, 255, 0.85);
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        backdrop-filter: blur(5px); /* adds blur behind container */
+        backdrop-filter: blur(5px);
       }
-
       h2 {
         text-align: center;
         margin-bottom: 15px;
       }
-
       input,
       button {
         width: 100%;
@@ -39,7 +35,6 @@
         border: 1px solid #ccc;
         font-size: 15px;
       }
-
       button {
         background: linear-gradient(90deg, #ff416c, #ff4b2b);
         color: white;
@@ -47,17 +42,14 @@
         cursor: pointer;
         transition: 0.3s;
       }
-
       button:hover {
         transform: scale(1.05);
       }
-
       ul {
         list-style: none;
         padding: 0;
         margin-top: 15px;
       }
-
       li {
         display: flex;
         align-items: center;
@@ -68,14 +60,12 @@
         border-radius: 8px;
         flex-wrap: wrap;
       }
-
       li img {
         width: 80px;
         height: 80px;
         border-radius: 6px;
         object-fit: cover;
       }
-
       li button {
         flex: 1;
         min-width: 100px;
@@ -83,36 +73,28 @@
         font-size: 14px;
       }
 
-      /* 📱 Mobile Theme */
+      /* Mobile */
       @media (max-width: 600px) {
-        body {
-          padding: 10px;
-        }
-
         .container {
           width: 100%;
           padding: 15px;
         }
-
         input,
         button {
           font-size: 14px;
           padding: 10px;
         }
-
         li {
           flex-direction: column;
           align-items: center;
           text-align: center;
           gap: 8px;
         }
-
         li img {
           width: 100%;
           max-width: 200px;
           height: auto;
         }
-
         li button {
           width: 100%;
         }
@@ -123,20 +105,24 @@
     <div class="container">
       <h2>Manage Promotions</h2>
       <input type="text" id="promoUrl" placeholder="Enter Image/Video URL" />
-      <button onclick="addPromo()">➕ Add Promotion</button>
+      <button id="addBtn">➕ Add Promotion</button>
       <ul id="promoList"></ul>
     </div>
 
     <script>
       const API_URL =
-        "https://script.google.com/macros/s/AKfycbwLlBRErTsmQl7g4G7w7IqrXo0tFTb1yoAAioHr1xqiE1PxYtJxfvrBlR30s9Js1JScWA/exec"; // replace with your Web App URL
+        "https://script.google.com/macros/s/AKfycbwLlBRErTsmQl7g4G7w7IqrXo0tFTb1yoAAioHr1xqiE1PxYtJxfvrBlR30s9Js1JScWA/exec";
       let promos = [];
 
-      // Fetch all promotions
+      // Fetch promotions
       async function fetchPromos() {
-        const res = await fetch(API_URL);
-        promos = await res.json();
-        displayPromos();
+        try {
+          const res = await fetch(API_URL);
+          promos = await res.json();
+          displayPromos();
+        } catch (e) {
+          console.error("Failed to fetch promotions:", e);
+        }
       }
 
       // Display promotions
@@ -145,8 +131,10 @@
         ul.innerHTML = "";
         promos.forEach((p) => {
           const li = document.createElement("li");
-          li.innerHTML = `<img src="${p.url}" alt="Promo">
-            <button onclick="deletePromo('${p.id}')">❌ Remove</button>`;
+          li.innerHTML = `
+      <img src="${p.url}" alt="Promo">
+      <button onclick="deletePromo('${p.id}')">❌ Remove</button>
+    `;
           ul.appendChild(li);
         });
       }
@@ -155,24 +143,36 @@
       async function addPromo() {
         const url = document.getElementById("promoUrl").value.trim();
         if (!url) return alert("Enter a URL!");
-        await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "add", url }),
-        });
-        document.getElementById("promoUrl").value = "";
-        fetchPromos();
+        try {
+          await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "add", url }),
+          });
+          document.getElementById("promoUrl").value = "";
+          fetchPromos();
+        } catch (e) {
+          console.error("Failed to add promo:", e);
+        }
       }
 
       // Delete promotion
       async function deletePromo(id) {
-        await fetch(API_URL, {
-          method: "POST",
-          body: JSON.stringify({ action: "delete", id }),
-        });
-        fetchPromos();
+        if (!confirm("Are you sure to remove this promotion?")) return;
+        try {
+          await fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({ action: "delete", id }),
+          });
+          fetchPromos();
+        } catch (e) {
+          console.error("Failed to delete promo:", e);
+        }
       }
 
-      // Initial fetch
+      // Event listener
+      document.getElementById("addBtn").addEventListener("click", addPromo);
+
+      // Initial load
       fetchPromos();
     </script>
   </body>
