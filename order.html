@@ -15,6 +15,7 @@
         font-family: "Poppins", sans-serif;
         background: linear-gradient(120deg, #fdfbfb, #ebedee);
         color: #333;
+        padding-bottom: 120px; /* space for fixed buttons */
       }
       header {
         background: linear-gradient(90deg, #ff416c, #ff4b2b);
@@ -29,9 +30,9 @@
       }
       .container {
         max-width: 600px;
-        margin: 30px auto;
+        margin: 20px auto;
         background: #fff;
-        padding: 25px;
+        padding: 20px;
         border-radius: 15px;
         box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
       }
@@ -39,6 +40,7 @@
         text-align: center;
         margin-bottom: 20px;
         color: #ff416c;
+        font-size: 20px;
       }
       input,
       textarea,
@@ -49,6 +51,11 @@
         border-radius: 8px;
         border: 1px solid #ccc;
         font-size: 16px;
+        box-sizing: border-box;
+      }
+      textarea {
+        min-height: 80px;
+        resize: vertical;
       }
       button {
         background: linear-gradient(90deg, #00c6ff, #0072ff);
@@ -63,14 +70,15 @@
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        margin-top: 15px;
         border-radius: 10px;
         overflow: hidden;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        font-size: 14px;
       }
       th,
       td {
-        padding: 12px;
+        padding: 10px;
         border: 1px solid #ddd;
         text-align: center;
       }
@@ -81,7 +89,7 @@
       /* Fixed Buttons */
       .fixed-buttons {
         position: fixed;
-        bottom: 20px;
+        bottom: 15px;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -91,10 +99,10 @@
       .icon-button {
         background: linear-gradient(145deg, #ff416c, #ff4b2b);
         border: none;
-        padding: 15px;
+        padding: 14px;
         border-radius: 50%;
         cursor: pointer;
-        font-size: 20px;
+        font-size: 18px;
         color: #fff;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
         transition: 0.3s;
@@ -114,6 +122,45 @@
         border-radius: 50%;
         padding: 3px 7px;
       }
+      footer {
+        text-align: center;
+        font-size: 13px;
+        color: #555;
+        padding: 10px;
+        margin-top: 20px;
+      }
+
+      /* 📱 Mobile Theme */
+      @media (max-width: 600px) {
+        header {
+          font-size: 18px;
+          padding: 12px;
+        }
+        .container {
+          width: 92%;
+          padding: 15px;
+          margin: 15px auto;
+        }
+        h2 {
+          font-size: 18px;
+        }
+        input,
+        textarea,
+        button {
+          font-size: 14px;
+          padding: 10px;
+        }
+        table {
+          font-size: 12px;
+        }
+        .fixed-buttons {
+          gap: 15px;
+        }
+        .icon-button {
+          padding: 12px;
+          font-size: 16px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -126,7 +173,8 @@
         <input name="name" placeholder="Name" required />
         <input name="contact" placeholder="Contact Number" required />
         <textarea name="address" placeholder="Address" required></textarea>
-        <input type="date" name="date" placeholder="Delivery date" required />
+        <label for="date">Delivery Date</label>
+        <input type="date" name="date" required />
 
         <!-- Live Location -->
         <input
@@ -140,11 +188,6 @@
 
         <button type="submit">Place Order</button>
       </form>
-      <!-- <a href="./index.html"
-        ><button style="margin-top: 10px; background: #ff416c">
-          Back To Home
-        </button></a
-      > -->
       <p id="msg" style="text-align: center; margin-top: 15px"></p>
     </div>
 
@@ -155,10 +198,8 @@
       ></a>
       <a href="./cart.html"
         ><button class="icon-button">
-          <i class="fas fa-shopping-cart"></i
-          ><span id="cartBadge" class="cart-badge" style="display: none"
-            >0</span
-          >
+          <i class="fas fa-shopping-cart"></i>
+          <span id="cartBadge" class="cart-badge" style="display: none">0</span>
         </button></a
       >
       <a href="./support.html"
@@ -166,10 +207,16 @@
       ></a>
     </div>
 
+    <footer>
+      <p>
+        ℹ️ Note: After clicking <b>Place Order</b>, please wait ~10 seconds.
+      </p>
+    </footer>
+
     <script>
       // Google Script URL
       const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyfiN7rjqmSySg_VVo9hE5SBto3U2owCqq44oZEOQfGUNhB0X03ZT9GkbOR-e1nWHye4g/exec"; // replace with your Apps Script URL
+        "https://script.google.com/macros/s/AKfycbyfiN7rjqmSySg_VVo9hE5SBto3U2owCqq44oZEOQfGUNhB0X03ZT9GkbOR-e1nWHye4g/exec";
 
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const cartDiv = document.getElementById("cartPreview");
@@ -233,7 +280,7 @@
             .then((res) => res.text())
             .then((data) => {
               document.getElementById("msg").innerText =
-                "✅ Order placed successfully!   My coordinator contact with you";
+                "✅ Order placed successfully! Our coordinator will contact you soon.";
               localStorage.removeItem("cart");
               cartDiv.innerHTML = "<p>🛒 Your cart is now empty!</p>";
               this.reset();
@@ -248,4 +295,3 @@
     </script>
   </body>
 </html>
-
