@@ -9,17 +9,13 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
     <style>
       body {
         margin: 0;
-        font-family: "Poppins", sans-serif;
+        font-family: Poppins, sans-serif;
         background: linear-gradient(120deg, #fdfbfb, #ebedee);
         color: #333;
-        padding-bottom: 100px; /* space for fixed buttons */
+        padding-bottom: 100px;
       }
       header {
         background: linear-gradient(90deg, #7b2ff7, #f107a3);
@@ -34,6 +30,40 @@
         height: 60px;
         border-radius: 12px;
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Promotions Slider */
+      .slider {
+        overflow: hidden;
+        width: 100%;
+        margin: 20px 0;
+      }
+      .slide-track {
+        display: flex;
+        animation: scroll 25s linear infinite;
+      }
+      .slide {
+        width: 220px;
+        height: 150px;
+        margin: 0 8px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+      }
+      .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      @keyframes scroll {
+        0% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(-50%);
+        }
       }
 
       /* Categories */
@@ -52,7 +82,6 @@
       .category {
         text-align: center;
         cursor: pointer;
-        transition: transform 0.3s;
         flex: 0 0 auto;
       }
       .category img {
@@ -67,48 +96,8 @@
         font-size: 13px;
         margin: 4px 0 0 0;
       }
-      .category:hover {
-        transform: translateY(-3px);
-      }
       .category:hover img {
         transform: scale(1.1);
-      }
-
-      /* Slider */
-      .slider {
-        overflow: hidden;
-        width: 100%;
-        margin: 20px 0;
-      }
-      .slide-track {
-        display: flex;
-        animation: scroll 25s linear infinite;
-      }
-      .slide {
-        width: 220px;
-        height: 150px;
-        margin: 0 8px;
-        flex-shrink: 0;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        transition: transform 0.3s;
-      }
-      .slide:hover {
-        transform: scale(1.05);
-      }
-      .slide img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-      @keyframes scroll {
-        0% {
-          transform: translateX(0);
-        }
-        100% {
-          transform: translateX(-50%);
-        }
       }
 
       /* Video */
@@ -187,7 +176,7 @@
         font-weight: bold;
       }
 
-      /* Start Button */
+      /* Start Buttons */
       .start-shopping {
         text-align: center;
         margin: 20px;
@@ -211,14 +200,15 @@
         transform: scale(1.05);
       }
 
-      /* 📱 Mobile Theme */
+      /* Mobile Theme */
       @media (max-width: 600px) {
         header img {
           height: 50px;
         }
-        .categories {
-          gap: 8px;
-          padding: 8px;
+        .slide {
+          width: 170px;
+          height: 110px;
+          margin: 0 5px;
         }
         .category img {
           width: 42px;
@@ -226,11 +216,6 @@
         }
         .category p {
           font-size: 11px;
-        }
-        .slide {
-          width: 170px;
-          height: 110px;
-          margin: 0 5px;
         }
         .section {
           flex-direction: column;
@@ -257,6 +242,8 @@
     </header>
 
     <!-- Categories -->
+
+    <!-- <h2 style="text-align: center">Categories</h2> -->
     <div class="categories">
       <div class="category" onclick="startShopping('Milk')">
         <img src="https://hamul.coop/wp-content/uploads/2020/09/kidmilk2.jpg" />
@@ -288,7 +275,9 @@
       </div>
     </div>
 
-    <!-- Slider -->
+    <!-- Promotions Slider -->
+    <!-- <h2 style="text-align: center">Promotions</h2> -->
+    <br />
     <div class="slider"><div class="slide-track" id="sliderTrack"></div></div>
 
     <!-- Promo Video -->
@@ -299,68 +288,187 @@
       />
     </video>
 
-    <!-- Fixed Buttons -->
-    <div class="fixed-buttons">
-      <a href="./index.html"
-        ><button class="icon-button"><i class="fas fa-home"></i></button
-      ></a>
-      <a href="./cart.html">
-        <button class="icon-button">
-          <i class="fas fa-shopping-cart"></i>
-          <span id="cartBadge" class="cart-badge" style="display: none">0</span>
-        </button>
-      </a>
-      <a href="./support.html"
-        ><button class="icon-button"><i class="fas fa-headset"></i></button
-      ></a>
-    </div>
-
     <!-- Sections -->
     <div class="section">
       <div class="left">
         <h2>HEALTHIER & TASTIER</h2>
-        <p>Dahi or <span class="highlight">Curd</span> is a staple...</p>
+        <p>
+          Dahi or <span class="highlight">Curd</span> is a staple in Indian
+          households. V R Curd is made from pure pasteurised milk, creamy and
+          delicious, yet low in fat, making it ideal for health and weight
+          management.
+        </p>
       </div>
       <div class="middle">
         <img
           src="https://static.vecteezy.com/system/resources/thumbnails/036/291/197/small_2x/ai-generated-sour-cream-in-white-bowl-with-transparent-background-ai-png.png"
         />
-        <h2>BEST QUALITY V R CURD</h2>
+        <h2>BEST QUALITY V.R CURD</h2>
       </div>
       <div class="right">
         <h2>GOODNESS OF CALCIUM</h2>
-        <p>Packed with calcium, protein...</p>
+        <p>
+          Packed with calcium, protein and vitamins, V R curd is
+          <span class="highlight">beneficial in numerous ways</span>. It
+          improves digestion and helps you stay fit and cheerful.
+        </p>
+      </div>
+    </div>
+    <!-- GHEE -->
+    <div class="section">
+      <div class="left">
+        <h2>PURITY & AROMA</h2>
+        <p>
+          V R <span class="highlight">Ghee</span> is prepared from the finest
+          butter, delivering rich taste, natural aroma and authentic traditional
+          flavor. Perfect for cooking, rituals and daily use.
+        </p>
+      </div>
+      <div class="middle">
+        <img
+          src="https://cdn.shopify.com/s/files/1/0586/8234/3501/files/cow_desi_ghee_image.webp?v=1742634983"
+          alt="V R Ghee"
+        />
+        <h2>PREMIUM QUALITY GHEE</h2>
+      </div>
+      <div class="right">
+        <h2>RICH IN NUTRIENTS</h2>
+        <p>
+          Full of healthy fats, vitamins A, D, E & K, our ghee helps boost
+          immunity, improve energy and enhance digestion naturally.
+        </p>
       </div>
     </div>
 
+    <!-- MILK -->
+    <div class="section">
+      <div class="left">
+        <h2>FRESH & PURE</h2>
+        <p>
+          V R <span class="highlight">Milk</span> is sourced from healthy cows
+          and processed under strict hygiene, ensuring freshness and rich
+          nutrition.
+        </p>
+      </div>
+      <div class="middle">
+        <img
+          src="https://png.pngtree.com/png-clipart/20241121/original/pngtree-splash-of-milk-png-image_17282115.png"
+          alt="V R milk"
+        />
+        <h2>PURE V R MILK</h2>
+      </div>
+      <div class="right">
+        <h2>COMPLETE NUTRITION</h2>
+        <p>
+          Rich in protein, calcium and essential nutrients, V R milk supports
+          strong bones, muscle growth and overall health.
+        </p>
+      </div>
+    </div>
+
+    <!-- BUTTER -->
+    <div class="section">
+      <div class="left">
+        <h2>CREAMY & DELICIOUS</h2>
+        <p>
+          V R <span class="highlight">Butter</span> is churned from pure milk
+          cream, offering smooth texture and rich taste that enhances every
+          dish.
+        </p>
+      </div>
+      <div class="middle">
+        <img
+          src="https://t4.ftcdn.net/jpg/12/94/37/97/360_F_1294379783_8uw4D8LYoFPqWPMglsyWr1vLHlt32njZ.jpg"
+          alt="V R Butter"
+        />
+        <h2>FRESH V R BUTTER</h2>
+      </div>
+      <div class="right">
+        <h2>ENERGY PACKED</h2>
+        <p>
+          Butter is a great source of healthy fats, vitamin A and D, helping
+          provide energy while adding flavor to your meals.
+        </p>
+      </div>
+    </div>
+    <!-- PANEER -->
+    <div class="section">
+      <div class="left">
+        <h2>SOFT & NUTRITIOUS</h2>
+        <p>
+          V R <span class="highlight">Paneer</span> is made from fresh milk,
+          with a soft texture and delicious taste, perfect for Indian curries
+          and snacks.
+        </p>
+      </div>
+      <div class="middle">
+        <img
+          src="https://fpsstore.in/cdn/shop/products/Paneer.jpg?v=1644672587"
+          alt="V R Paneer"
+        />
+        <h2>FRESH V R PANEER</h2>
+      </div>
+      <div class="right">
+        <h2>RICH IN PROTEIN</h2>
+        <p>
+          Paneer is an excellent source of protein and calcium, supporting
+          muscle strength, bone health and a balanced diet.
+        </p>
+      </div>
+    </div>
+
+    <!-- Start Buttons -->
     <div class="start-shopping">
-      <a href="./category.html"> <button>Start Shopping 🛒</button></a>
+      <a href="./category.html"><button>Start Shopping 🛒</button></a>
       <a href="./admin.html"><button>Admin</button></a>
     </div>
 
+    <!-- Fixed Buttons -->
+    <div class="fixed-buttons">
+      <a href="./index.html"
+        ><button class="icon-button"><i class="fas fa-home"></i></button
+      ></a>
+      <a href="./cart.html"
+        ><button class="icon-button">
+          <i class="fas fa-shopping-cart"></i
+          ><span id="cartBadge" class="cart-badge" style="display: none"
+            >0</span
+          >
+        </button></a
+      >
+      <a href="./support.html"
+        ><button class="icon-button"><i class="fas fa-headset"></i></button
+      ></a>
+    </div>
+
     <script>
-      function enterStore() {
-        window.location.href = "store.html";
+      const PROMO_API =
+        "https://script.google.com/macros/s/AKfycbwLlBRErTsmQl7g4G7w7IqrXo0tFTb1yoAAioHr1xqiE1PxYtJxfvrBlR30s9Js1JScWA/exec";
+      const sliderTrack = document.getElementById("sliderTrack");
+
+      // Load Promotions dynamically
+      async function loadPromotions() {
+        try {
+          const res = await fetch(PROMO_API);
+          const promos = await res.json();
+          if (promos.length === 0) return;
+          const finalImgs = promos.map((p) => p.url);
+          [...finalImgs, ...finalImgs].forEach((url) => {
+            const div = document.createElement("div");
+            div.className = "slide";
+            div.innerHTML = `<img src="${url}" alt="Promo">`;
+            sliderTrack.appendChild(div);
+          });
+        } catch (e) {
+          console.error("Failed to load promotions:", e);
+        }
       }
+      loadPromotions();
+
+      // Categories click
       function startShopping(cat) {
         window.location.href = `category.html?cat=${cat}`;
       }
-
-      // Slider Images
-      const sliderTrack = document.getElementById("sliderTrack");
-      const images = JSON.parse(localStorage.getItem("sliderImages") || "[]");
-      const fallback = [
-        "https://static.vecteezy.com/system/resources/previews/007/144/859/non_2x/dairy-farm-label-logo-with-a-dairy-cow-cartoon-free-vector.jpg",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-0jD_yumTaFR7VA-EtnfvFPFC1HOV-cAJHzYURv8hItfhhY_2uL4TuU6Xl3kyffQD79E&usqp=CAU",
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQCTrwLm_t5r2lnHexIiWw97CK1Y4kRHxgSxw&s",
-      ];
-      const finalImgs = images.length ? images : fallback;
-      [...finalImgs, ...finalImgs].forEach((url) => {
-        const div = document.createElement("div");
-        div.className = "slide";
-        div.innerHTML = `<img src="${url}" alt="Promo">`;
-        sliderTrack.appendChild(div);
-      });
 
       // Cart Badge
       function updateCartBadge() {
