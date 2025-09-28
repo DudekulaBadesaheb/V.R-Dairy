@@ -172,6 +172,9 @@
       <form id="orderForm">
         <input name="name" placeholder="Name" required />
         <input name="contact" placeholder="Contact Number" required />
+        <input type="email" name="email" placeholder="Email" required />
+
+        <!-- NEW EMAIL FIELD -->
         <textarea name="address" placeholder="Address" required></textarea>
         <label for="date">Delivery Date</label>
         <input type="date" name="date" required />
@@ -188,6 +191,7 @@
 
         <button type="submit">Place Order</button>
       </form>
+
       <p id="msg" style="text-align: center; margin-top: 15px"></p>
     </div>
 
@@ -216,7 +220,7 @@
     <script>
       // Google Script URL
       const GOOGLE_SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyfiN7rjqmSySg_VVo9hE5SBto3U2owCqq44oZEOQfGUNhB0X03ZT9GkbOR-e1nWHye4g/exec";
+        "https://script.google.com/macros/s/AKfycbyu2fbTG4M1Mz5E4VZyHvR7l7kAgXdfqXXoEKOJW3x9lYa7AMcy21spNQo_7kzJn3jQeA/exec";
 
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
       const cartDiv = document.getElementById("cartPreview");
